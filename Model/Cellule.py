@@ -32,4 +32,13 @@ def isContenuCorrect(n:int)->bool:
         if n == const.ID_MINE:
             contenuCorrect = True
         return contenuCorrect
-
+def construireCellule(contenu=0, visible=False)->dict:
+    if isContenuCorrect(contenu) == False:
+        raise ValueError(f"construireCellule : le contenu {contenu} n'est pas correct.")
+    if type(visible) != bool:
+        raise TypeError(f"construireCellule : le second paramètre {type(visible)} n'est pas un booléen")
+    if contenu == -1:
+        dictCell = {'const.ID_MINE' : contenu, 'const.VISIBLE' : visible}
+    else:
+        dictCell = {'const.CONTENU':contenu, 'const.VISIBLE':visible}
+    return dictCell
