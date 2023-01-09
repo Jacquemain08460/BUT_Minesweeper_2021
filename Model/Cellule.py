@@ -32,13 +32,54 @@ def isContenuCorrect(n:int)->bool:
         if n == const.ID_MINE:
             contenuCorrect = True
         return contenuCorrect
-def construireCellule(contenu=0, visible=False)->dict:
+def construireCellule(contenu: int =0, visible: bool =False)->dict:
     if isContenuCorrect(contenu) == False:
         raise ValueError(f"construireCellule : le contenu {contenu} n'est pas correct.")
-    if type(visible) != bool:
-        raise TypeError(f"construireCellule : le second paramètre {type(visible)} n'est pas un booléen")
-    if contenu == -1:
-        dictCell = {'const.ID_MINE' : contenu, 'const.VISIBLE' : visible}
+    elif type(visible) != bool:
+        raise TypeError(f"construireCellule : le second paramètre {type(visible)} n'est pas un booléen.")
+    elif contenu == -1:
+        dictCell = {const.CONTENU : contenu, const.VISIBLE : visible}
     else:
-        dictCell = {'const.CONTENU':contenu, 'const.VISIBLE':visible}
+        dictCell = {const.CONTENU: contenu, const.VISIBLE: visible}
     return dictCell
+
+def getContenuCellule(dictCell : dict)-> int:
+    if type_cellule(dictCell) == False:
+        raise TypeError(f"getContenuCellule : Le paramètre n'est pas une cellule.")
+    else:
+        contenu = dictCell[const.CONTENU]
+    return contenu
+
+def isVisibleCellule(dictCell : dict)-> bool:
+    if type_cellule(dictCell) == False:
+        raise TypeError(f"isVisibleCellule : Le paramètre n'est pas une cellule.")
+    visible = dictCell[const.VISIBLE]
+    return visible
+
+def setContenuCellule(dictCell : dict, contenu: int)-> None:
+    if type_cellule(dictCell) == False:
+        raise TypeError("setContenuCellule : Le premier paramètre n'est pas une cellule.")
+    elif type(contenu) != int:
+        raise TypeError("setContenuCellule : Le second paramètre n'est pas un entier.")
+    elif isContenuCorrect(contenu)==False:
+        raise ValueError(f"setContenuCellule: la valeur du contenu {contenu} n'est pas correcte.")
+    else:
+        dictCell[const.CONTENU]=contenu
+    return None
+
+def setVisibleCellule(dictCell : dict, visible : bool)->None:
+    if type_cellule(dictCell) == False:
+        raise TypeError(f"setVisibleCellule : Le premier paramètre n'est pas une cellule.")
+    elif type(visible) != bool:
+        raise TypeError(f"setVisibleCellule : Le second paramètre n'est pas un booléen.")
+    else:
+        dictCell[const.VISIBLE]=visible
+    return None
+def contientMineCellule(dictCell : dict)-> bool:
+    if type_cellule(dictCell) == False:
+        raise TypeError(f"contientMineCellule: Le paramètre n'est pas une cellule.")
+    elif dictCell[const.CONTENU]==const.ID_MINE:
+        isMine = True
+    else:
+        isMine = False
+    return isMine
