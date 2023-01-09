@@ -50,5 +50,18 @@ def type_grille_demineur(grille: list) -> bool:
     #     if not type_cellule(cell):
     #         return False
     # return True
+def construireGrilleDemineur(nl : int, nc : int)-> list:
+    if nl <=0 or nc <= 0:
+        raise ValueError(f"construireGrilleDemineur : Le nombre de lignes {nl} ou de colonnes {nc} est négatif ou nul.")
+    if type(nl) != int or type(nc) != int:
+        raise TypeError(f"construireGrilleDemineur : Le nombre de lignes {type(nl)} ou de colonnes {type(nc)} n'est pas un entier.")
+    grille =[]
+    listTemp=[]
+    for i in range(nl):
+        for j in range(nc):
+            listTemp += [construireCellule()]
+        grille.append(listTemp)
+        listTemp = []
 
+    return grille
 
