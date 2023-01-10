@@ -222,3 +222,10 @@ def perduGrilleDemineur(grille : list)-> bool:
             if contenu == -1 and visible == True:
                 perdu = True
     return perdu
+
+def reinitialiserGrilleDemineur(grille : list)-> None:
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):
+            cellule = getCelluleGrilleDemineur(grille, (i,j))
+            reinitialiserCellule(cellule)
+    return None
