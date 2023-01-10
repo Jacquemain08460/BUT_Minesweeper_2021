@@ -114,3 +114,31 @@ def contientMineGrilleDemineur(grille : list, coord : tuple)->bool:
     cellule = getCelluleGrilleDemineur(grille, coord)
     isMine = contientMineCellule(cellule)
     return isMine
+def getCoordonneeVosinsGrilleDemineur(grille : list, coord : tuple)->list:
+    if (type_grille_demineur(grille)==False) or type(coord[0])!=int or type(coord[1])!=int:
+        raise TypeError("getCoordonneeVoisinsGrilleDemineur : un des paramètres n'est pas du bon type.")
+    if isCoordonneeCorrecte(grille, coord)==False:
+        raise IndexError("getCoordonneeVoisinGrilleDemineur : la coordonnée n'est pas dans la grille.")
+    listCoord=[]
+    coordTemp= (0,0)
+    coordTemp[0]=coord[0]-1
+    coordTemp[1]=coord[1]-1
+    for i in range(0,3):
+        if isCoordonneeCorrecte(grille, coordTemp) == True:
+            c= getCelluleGrilleDemineur(grille, coordTemp)
+            listCoord += [coordTemp]
+        coordTemp[1]= coordTemp[1]+1
+    coordTemp[0] += 1
+    coordTemp[1] = coord[1]-1
+    if isCoordonneeCorrecte(grille, coordTemp) == True:
+        listCoord += [coordTemp]
+    coordTemp[1] += 2
+    if isCoordonneeCorrecte(grille, coordTemp) == True:
+        listCoord += [coordTemp]
+    coordTemp[0] += 1
+    coordTemp[1] = coord[1]-1
+    for i in range(0,3):
+        if isCoordonneeCorrecte(grille, coordTemp) == True:
+            listCoord += [coordTemp]
+        coordTemp[1] += 1
+    return listCoord
