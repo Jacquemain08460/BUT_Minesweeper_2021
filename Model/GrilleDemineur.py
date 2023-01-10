@@ -116,25 +116,22 @@ def getCoordonneeVosinsGrilleDemineur(grille : list, coord : tuple)->list:
     if isCoordonneeCorrecte(grille, coord)==False:
         raise IndexError("getCoordonneeVoisinGrilleDemineur : la coordonnée n'est pas dans la grille.")
     listCoord=[]
-    coordTemp1 = (coord[0]-1)
-    coordTemp2 = (coord[1]-1)
-    coordTemp = (coordTemp1, coordTemp2)
-    for i in range(0,3):
-        if isCoordonneeCorrecte(grille, coordTemp) == True:
-            c= getCelluleGrilleDemineur(grille, coordTemp)
-            listCoord += [coordTemp]
-        coordTemp= (coordTemp1,coordTemp2+1)
-    coordTemp = (coordTemp[0]+1, coord[1]-1)
-    if isCoordonneeCorrecte(grille, coordTemp) == True:
-        listCoord += [coordTemp]
-    coordTemp = (coordTemp[0], coordTemp[1] + 2)
-    if isCoordonneeCorrecte(grille, coordTemp) == True:
-        listCoord += [coordTemp]
-    coordTemp = (coordTemp[0] +1, coordTemp[1] -1)
-    for i in range(0,3):
-        if isCoordonneeCorrecte(grille, coordTemp) == True:
-            listCoord += [coordTemp]
-        coordTemp = (coordTemp[0], coordTemp[1] + 1)
+    if isCoordonneeCorrecte(grille,(coord[0]-1,coord[1]-1)) == True:
+        listCoord += [(coord[0]-1,coord[1]-1)]
+    if isCoordonneeCorrecte(grille,(coord[0]-1,coord[1])) == True:
+        listCoord += [(coord[0]-1,coord[1])]
+    if isCoordonneeCorrecte(grille,(coord[0]-1,coord[1]+1)) == True:
+        listCoord += [(coord[0]-1,coord[1]+1)]
+    if isCoordonneeCorrecte(grille,(coord[0],coord[1]-1)) == True:
+        listCoord += [(coord[0],coord[1]-1)]
+    if isCoordonneeCorrecte(grille, (coord[0],coord[1]+1)) == True:
+        listCoord += [(coord[0],coord[1]+1)]
+    if isCoordonneeCorrecte(grille,(coord[0]+1,coord[1]-1)) == True:
+        listCoord += [(coord[0]+1,coord[1]-1)]
+    if isCoordonneeCorrecte(grille,(coord[0]+1,coord[1])) == True:
+        listCoord += [(coord[0]+1,coord[1])]
+    if isCoordonneeCorrecte(grille,(coord[0]+1,coord[1]+1)) == True:
+        listCoord += [(coord[0]+1,coord[1]+1)]
     return listCoord
 
 def placerMinesGrilleDemineur(grille : list, nb : int, coord : tuple)->None:
@@ -160,8 +157,8 @@ def compterMinesVoisinesGrilleDemineur(grille : list)->None:
         for j in range(len(grille[i])-1):
             compteMine = 0
             coordTemp = (i,j)
-            cellule = getCelluleGrilleDemineur(grille, coordTemp)
-            if getContenuCellule(cellule) != const.ID_MINE:
+            cell = getCelluleGrilleDemineur(grille, coordTemp)
+            if getContenuCellule(cell) != const.ID_MINE:
                 listCoordTemp = getCoordonneeVosinsGrilleDemineur(grille,coordTemp)
                 print(listCoordTemp)
                 for p in range(len(listCoordTemp)):
@@ -170,7 +167,7 @@ def compterMinesVoisinesGrilleDemineur(grille : list)->None:
                         compteMine += 1
                         print(compteMine, "test")
                 print(compteMine)
-                setContenuCellule(cellule,compteMine)
+                setContenuCellule(cell,compteMine)
     return None
 def getNbMinesGrilleDemineur(grille : list)->int:
     if type_grille_demineur(grille) == False:

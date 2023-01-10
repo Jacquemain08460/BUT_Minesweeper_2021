@@ -37,10 +37,8 @@ def construireCellule(contenu: int =0, visible: bool =False)->dict:
         raise ValueError(f"construireCellule : le contenu {contenu} n'est pas correct.")
     elif type(visible) != bool:
         raise TypeError(f"construireCellule : le second paramètre {type(visible)} n'est pas un booléen.")
-    elif contenu == -1:
-        dictCell = {const.CONTENU : contenu, const.VISIBLE : visible}
     else:
-        dictCell = {const.CONTENU: contenu, const.VISIBLE: visible}
+        dictCell = {const.CONTENU : contenu, const.VISIBLE : visible, const.ANNOTATION : None}
     return dictCell
 
 def getContenuCellule(dictCell : dict)-> int:
@@ -83,3 +81,9 @@ def contientMineCellule(dictCell : dict)-> bool:
     else:
         isMine = False
     return isMine
+
+def isAnnotationCorrecte(annot : str)->bool:
+    isAnnotCorrect = False
+    if annot == None or annot == const.DOUTE or annot == const.FLAG:
+        isAnnotCorrect = True
+    return isAnnotCorrect
