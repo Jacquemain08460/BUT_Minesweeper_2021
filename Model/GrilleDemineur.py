@@ -69,24 +69,20 @@ def getNbLignesGrilleDemineur(grille : list)-> int:
         raise TypeError(f"getNbLignesGrilleDemineur : Le paramètre n'est pas une grille.")
     nl = len(grille)
     return nl
-
 def getNbColonnesGrilleDemineur(grille : list)-> int:
     if type_grille_demineur(grille) == False:
         raise TypeError(f"getNbColonnesGrilleDemineur : Le paramètre n'est pas une grille.")
     nc = len(grille[0])
     return nc
-
 def isCoordonneeCorrecte(grille : list, coord : tuple)-> bool:
     contient = False
-    if (type(coord[0]) != int) or (type(coord[1])!= int) or (type_grille_demineur(grille)==False):
+    if (type(coord[0]) != int) or (type(coord[1]) != int) or (type_grille_demineur(grille)==False):
         raise TypeError(f"isCoordonneeCorrecte : un des paramètres n'est pas du bon type.")
     nlGrille = getNbLignesGrilleDemineur(grille)
     ncGrille = getNbColonnesGrilleDemineur(grille)
-    #print(ncGrille)
-    if (nlGrille > coord[0]) and (ncGrille > coord[1]):
+    if (nlGrille > coord[0]) and (ncGrille > coord[1]) and coord[0] >= 0 and coord[1] >= 0:
         contient = True
     return contient
-
 def getCelluleGrilleDemineur(grille : list, coord : tuple)-> dict:
     if type_grille_demineur(grille)==False or type(coord[0])!=int or type(coord[1])!=int:
         raise TypeError(f"getCelluleGrilleDemineur : un des paramètres n'est pas du bon type.")
@@ -142,3 +138,22 @@ def getCoordonneeVosinsGrilleDemineur(grille : list, coord : tuple)->list:
             listCoord += [coordTemp]
         coordTemp[1] += 1
     return listCoord
+
+def placerMinesGrilleDemineur(grille : list, nb : int, coord : tuple)->None:
+    if nb <=0 or (nb >= (getNbLignesGrilleDemineur(grille) * getNbColonnesGrilleDemineur(grille))):
+        raise ValueError("placerMinesGrillesDemineur : Nombre de bombes à placer incorrect.")
+    if isCoordonneeCorrecte(grille,coord) == False:
+        raise IndexError("placerMinesGrilleDemineur : la coordonnée n'est pas dans la grille.")
+    while nb >0:
+        coordTemp1 = randint(0, len(grille)-1)
+        coordTemp2 = randint(0, len(grille[0])-1)
+        coordTempTuple = (coordTemp1, coordTemp2)
+        while (coordTempTuple == coord) or (contientMineGrilleDemineur(grille,coordTempTuple) == True) or (isCoordonneeCorrecte(grille,coordTempTuple) == False):
+            coordTemp1 = randint(0, len(grille)-1)
+            coordTemp2 = randint(0, len(grille[0])-1)
+            coordTempTuple = (coordTemp1, coordTemp2)
+        cellule = getCelluleGrilleDemineur(grille,coordTempTuple)
+        if isCoordonneeCorrecte(grille, coordTempTuple)==True:
+            setContenuCellule(cellule, const.ID_MINE)
+            nb = nb-1
+    return None
