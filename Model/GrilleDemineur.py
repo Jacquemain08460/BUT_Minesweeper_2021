@@ -153,8 +153,8 @@ def placerMinesGrilleDemineur(grille : list, nb : int, coord : tuple)->None:
             nb = nb-1
     return None
 def compterMinesVoisinesGrilleDemineur(grille : list)->None:
-    for i in range(len(grille)-1):
-        for j in range(len(grille[i])-1):
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):
             compteMine = 0
             coordTemp = (i,j)
             cell = getCelluleGrilleDemineur(grille, coordTemp)
