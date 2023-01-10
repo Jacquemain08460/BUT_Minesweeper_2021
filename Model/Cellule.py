@@ -1,5 +1,6 @@
 # Model/Cellule.py
 #
+import constantly
 
 from Model.Constantes import *
 
@@ -96,4 +97,15 @@ def getAnnotationCellule(cellule : dict)-> str:
     else:
         annot = cellule[const.ANNOTATION]
         return annot
+
+def changeAnnotationCellule(cellule : dict)->None:
+    if type_cellule(cellule) == False:
+        raise TypeError("changeAnnotationCellule : le paramètre n'est pas une cellule.")
+    if cellule[const.ANNOTATION] == None:
+        cellule[const.ANNOTATION] = const.FLAG
+    elif cellule[const.ANNOTATION] == const.FLAG:
+        cellule[const.ANNOTATION] = const.DOUTE
+    elif cellule[const.ANNOTATION] == const.DOUTE:
+        cellule[const.ANNOTATION] = None
+    return None
 
