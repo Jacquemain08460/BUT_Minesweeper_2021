@@ -179,3 +179,8 @@ def getNbMinesGrilleDemineur(grille : list)->int:
             if contientMineCellule(cellule) == True:
                 compteMine += 1
     return compteMine
+
+def getAnnotationGrilleDemineur(grille : list, coord : tuple)-> str:
+    cellule = getCelluleGrilleDemineur(grille, coord)
+    annot = getAnnotationCellule(cellule)
+    return annot
