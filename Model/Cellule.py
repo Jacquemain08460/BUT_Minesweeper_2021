@@ -95,4 +95,5 @@ def getAnnotationCellule(cellule : dict)-> str:
         return None
     else:
         annot = cellule[const.ANNOTATION]
+        return annot
 
