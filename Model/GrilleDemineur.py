@@ -160,13 +160,9 @@ def compterMinesVoisinesGrilleDemineur(grille : list)->None:
             cell = getCelluleGrilleDemineur(grille, coordTemp)
             if getContenuCellule(cell) != const.ID_MINE:
                 listCoordTemp = getCoordonneeVosinsGrilleDemineur(grille,coordTemp)
-                print(listCoordTemp)
                 for p in range(len(listCoordTemp)):
-                    print("eee")
                     if contientMineGrilleDemineur(grille,listCoordTemp[p]) == True:
                         compteMine += 1
-                        print(compteMine, "test")
-                print(compteMine)
                 setContenuCellule(cell,compteMine)
     return None
 def getNbMinesGrilleDemineur(grille : list)->int:
@@ -184,3 +180,15 @@ def getAnnotationGrilleDemineur(grille : list, coord : tuple)-> str:
     cellule = getCelluleGrilleDemineur(grille, coord)
     annot = getAnnotationCellule(cellule)
     return annot
+
+def getMinesRestantesGrilleDemineur(grille : list)->int:
+    nbMine = getNbMinesGrilleDemineur(grille)
+    nbFlag = 0
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):
+            coord = (i,j)
+            cellule = getCelluleGrilleDemineur(grille, coord)
+            if cellule[const.ANNOTATION] == const.FLAG:
+                nbFlag += 1
+    nbRestant = nbMine - nbFlag
+    return nbRestant

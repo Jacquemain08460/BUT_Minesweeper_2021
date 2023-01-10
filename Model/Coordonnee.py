@@ -24,11 +24,13 @@ def construireCoordonnee(num_li:int, num_co:int)->tuple:
         raise ValueError(f"construireCoordonne : Le numéro de ligne {num_li} ou de colonne {num_co} ne sont pas positifs.")
     lico = (num_li,num_co)
     return lico
-def getLigneCoordonne(lico:tuple)->int:
+
+def getLigneCoordonnee(lico:tuple)->int:
     if type_coordonnee(lico) == False:
         raise TypeError(f"getLigneCoordonne : Le paramètre n'est pas une coordonnée.")
     num_li = lico[0]
     return num_li
+
 def getColonneCoordonnee(lico:tuple)->int:
     if type_coordonnee(lico) == False :
         raise TypeError(f"getColonneCoordonnee : Le paramètre n'est pas une coordonnee.")
