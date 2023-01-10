@@ -192,3 +192,22 @@ def getMinesRestantesGrilleDemineur(grille : list)->int:
                 nbFlag += 1
     nbRestant = nbMine - nbFlag
     return nbRestant
+
+def gagneGrilleDemineur(grille : list)-> bool:
+    gagne = False
+    comptePoint = 0
+    iter = 0
+    nbMine = getNbMinesGrilleDemineur(grille)
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):
+            cellule = getCelluleGrilleDemineur(grille, (i,j))
+            contenu = getContenuCellule(cellule)
+            if contientMineCellule(cellule) == True and isVisibleCellule(cellule) == False and getAnnotationCellule(cellule) == const.FLAG:
+                comptePoint += 1
+            elif contenu != -1 and isVisibleCellule(cellule) == True:
+                comptePoint += 1
+            iter += 1
+    #print(comptePoint, iter, nbMine)
+    if comptePoint == (len(grille)*len(grille[0])):
+        gagne = True
+    return gagne
