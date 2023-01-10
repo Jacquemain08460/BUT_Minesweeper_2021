@@ -211,3 +211,14 @@ def gagneGrilleDemineur(grille : list)-> bool:
     if comptePoint == (len(grille)*len(grille[0])):
         gagne = True
     return gagne
+
+def perduGrilleDemineur(grille : list)-> bool:
+    perdu = False
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):
+            cellule = getCelluleGrilleDemineur(grille, (i,j))
+            contenu = getContenuCellule(cellule)
+            visible = isVisibleCellule(cellule)
+            if contenu == -1 and visible == True:
+                perdu = True
+    return perdu
