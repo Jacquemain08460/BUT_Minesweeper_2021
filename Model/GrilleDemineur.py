@@ -161,23 +161,20 @@ def placerMinesGrilleDemineur(grille : list, nb : int, coord : tuple)->None:
         if isCoordonneeCorrecte(grille, coordTempTuple)==True:
             setContenuCellule(cellule, const.ID_MINE)
             nb = nb-1
+    compterMinesVoisinesGrilleDemineur(grille)
     return None
 def compterMinesVoisinesGrilleDemineur(grille : list)->None:
     for i in range(len(grille)):
         for j in range(len(grille[i])):
             compteMine = 0
-            coordTemp = (i,j)
-            cellTemp = getCelluleGrilleDemineur(grille, coordTemp)
+            cellTemp = getCelluleGrilleDemineur(grille, (i,j))
             if getContenuCellule(cellTemp) != const.ID_MINE:
-                listCoordTemp = getCoordonneeVoisinsGrilleDemineur(grille,coordTemp)
+                listCoordTemp = getCoordonneeVoisinsGrilleDemineur(grille,(i,j))
                 for p in range(len(listCoordTemp)):
-                    print(listCoordTemp[p], p, "p")
                     if getContenuCellule(getCelluleGrilleDemineur(grille,listCoordTemp[p])) == const.ID_MINE:
                         compteMine = compteMine + 1
-                        print(compteMine)
                 setContenuCellule(cellTemp,compteMine)
-                print("ee",getContenuCellule(cellTemp))
-                print("idMine", const.ID_MINE)
+
     return None
 def getNbMinesGrilleDemineur(grille : list)->int:
     if type_grille_demineur(grille) == False:
@@ -285,17 +282,17 @@ def ajouterFlagGrilleDemineur(grille : list, coord : tuple)->set:
             ensemble = (ensemble, listVoisins[i])
     return ensemble
 
-#def simplifierToutDemineur(grille : list)->tuple:
-    #ensCoordVisibTemp = set()
-    #ensCoordFlagTemp = set()
-    #ensCoordVisib = set()
-    #ensCoordFlag = set()
-    #while ensCoordVisib != ensCoordVisibTemp or ensCoordFlag != ensCoordFlagTemp:
-        #for i in range(len(grille)):
-            #for j in range(len(grille[i])):
-                #ensCoordVisibTemp += simplifierGrilleDemineur(grille,(i,j))
-                #if ensCoordVisibTemp :
-                #    ii
-                #if :
-                 #   ensCoordFlagTemp += ajouterFlagGrilleDemineur(grille, (i,j))
-    #return (ensCoordVisib, ensCoordFlag)
+def simplifierToutDemineur(grille : list)->tuple:
+    ensCoordVisibTemp = set()
+    ensCoordFlagTemp = set()
+    ensCoordVisib = set()
+    ensCoordFlag = set()
+    while ensCoordVisib != ensCoordVisibTemp or ensCoordFlag != ensCoordFlagTemp:
+        for i in range(len(grille)):
+            for j in range(len(grille[i])):
+                ensCoordVisibTemp += simplifierGrilleDemineur(grille,(i,j))
+                if ensCoordVisibTemp :
+                    ii
+                if True:
+                    ensCoordFlagTemp += ajouterFlagGrilleDemineur(grille, (i,j))
+    return (ensCoordVisib, ensCoordFlag)
