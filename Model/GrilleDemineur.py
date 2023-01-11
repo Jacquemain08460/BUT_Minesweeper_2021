@@ -64,16 +64,19 @@ def construireGrilleDemineur(nl : int, nc : int)-> list:
         listTemp = []
 
     return grille
+
 def getNbLignesGrilleDemineur(grille : list)-> int:
     if type_grille_demineur(grille) == False:
         raise TypeError(f"getNbLignesGrilleDemineur : Le paramètre n'est pas une grille.")
     nl = len(grille)
     return nl
+
 def getNbColonnesGrilleDemineur(grille : list)-> int:
     if type_grille_demineur(grille) == False:
         raise TypeError(f"getNbColonnesGrilleDemineur : Le paramètre n'est pas une grille.")
     nc = len(grille[0])
     return nc
+
 def isCoordonneeCorrecte(grille : list, coord : tuple)-> bool:
     contient = False
     if (type(coord[0]) != int) or (type(coord[1]) != int) or (type_grille_demineur(grille)==False):
@@ -83,6 +86,7 @@ def isCoordonneeCorrecte(grille : list, coord : tuple)-> bool:
     if (nlGrille > coord[0]) and (ncGrille > coord[1]) and coord[0] >= 0 and coord[1] >= 0:
         contient = True
     return contient
+
 def getCelluleGrilleDemineur(grille : list, coord : tuple)-> dict:
     if type_grille_demineur(grille)==False or type(coord[0])!=int or type(coord[1])!=int:
         raise TypeError(f"getCelluleGrilleDemineur : un des paramètres n'est pas du bon type.")
@@ -90,27 +94,33 @@ def getCelluleGrilleDemineur(grille : list, coord : tuple)-> dict:
         raise IndexError(f"getCelluleGrilleDemineur : coordonnée non contenue dans la grille.")
     dictCell = grille[coord[0]][coord[1]]
     return dictCell
+
 def getContenuGrilleDemineur(grille : list, coord : tuple)->int:
     cellule = getCelluleGrilleDemineur(grille, coord)
     contenu = getContenuCellule(cellule)
     return contenu
+
 def setContenuGrilleDemineur(grille : list, coord : tuple, contenu : int)-> None:
     cellule = getCelluleGrilleDemineur(grille, coord)
     setContenuCellule(cellule, contenu)
     return None
+
 def isVisibleGrilleDemineur(grille : list, coord : tuple)->bool:
     cellule = getCelluleGrilleDemineur(grille, coord)
     isVisible = isVisibleCellule(cellule)
     return isVisible
+
 def setVisibleGrilleDemineur(grille : list, coord : tuple, visible : bool)->None:
     cellule = getCelluleGrilleDemineur(grille, coord)
     setVisibleCellule(cellule, visible)
     return None
+
 def contientMineGrilleDemineur(grille : list, coord : tuple)->bool:
     cellule = getCelluleGrilleDemineur(grille, coord)
     isMine = contientMineCellule(cellule)
     return isMine
-def getCoordonneeVosinsGrilleDemineur(grille : list, coord : tuple)->list:
+
+def getCoordonneeVoisinsGrilleDemineur(grille : list, coord : tuple)->list:
     if (type_grille_demineur(grille)==False) or type(coord[0])!=int or type(coord[1])!=int:
         raise TypeError("getCoordonneeVoisinsGrilleDemineur : un des paramètres n'est pas du bon type.")
     if isCoordonneeCorrecte(grille, coord)==False:
@@ -157,13 +167,17 @@ def compterMinesVoisinesGrilleDemineur(grille : list)->None:
         for j in range(len(grille[i])):
             compteMine = 0
             coordTemp = (i,j)
-            cell = getCelluleGrilleDemineur(grille, coordTemp)
-            if getContenuCellule(cell) != const.ID_MINE:
-                listCoordTemp = getCoordonneeVosinsGrilleDemineur(grille,coordTemp)
+            cellTemp = getCelluleGrilleDemineur(grille, coordTemp)
+            if getContenuCellule(cellTemp) != const.ID_MINE:
+                listCoordTemp = getCoordonneeVoisinsGrilleDemineur(grille,coordTemp)
                 for p in range(len(listCoordTemp)):
-                    if contientMineGrilleDemineur(grille,listCoordTemp[p]) == True:
-                        compteMine += 1
-                setContenuCellule(cell,compteMine)
+                    print(listCoordTemp[p], p, "p")
+                    if getContenuCellule(getCelluleGrilleDemineur(grille,listCoordTemp[p])) == const.ID_MINE:
+                        compteMine = compteMine + 1
+                        print(compteMine)
+                setContenuCellule(cellTemp,compteMine)
+                print("ee",getContenuCellule(cellTemp))
+                print("idMine", const.ID_MINE)
     return None
 def getNbMinesGrilleDemineur(grille : list)->int:
     if type_grille_demineur(grille) == False:
@@ -197,7 +211,6 @@ def gagneGrilleDemineur(grille : list)-> bool:
     gagne = False
     comptePoint = 0
     iter = 0
-    nbMine = getNbMinesGrilleDemineur(grille)
     for i in range(len(grille)):
         for j in range(len(grille[i])):
             cellule = getCelluleGrilleDemineur(grille, (i,j))
@@ -207,7 +220,6 @@ def gagneGrilleDemineur(grille : list)-> bool:
             elif contenu != -1 and isVisibleCellule(cellule) == True:
                 comptePoint += 1
             iter += 1
-    #print(comptePoint, iter, nbMine)
     if comptePoint == (len(grille)*len(grille[0])):
         gagne = True
     return gagne
@@ -229,3 +241,61 @@ def reinitialiserGrilleDemineur(grille : list)-> None:
             cellule = getCelluleGrilleDemineur(grille, (i,j))
             reinitialiserCellule(cellule)
     return None
+
+def decouvrirGrilleDemineur(grille : list, coord : tuple, setBase = set())->set:
+    setBase = set()
+    cellule = getCelluleGrilleDemineur(grille, coord)
+    setVisibleCellule(cellule, True)
+    setBase.add(coord)
+    if getContenuCellule(cellule) == 0:
+        listVoisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
+        for i in range(len(listVoisins)):
+            celluleTemp= getCelluleGrilleDemineur(grille, listVoisins[i])
+            if getContenuCellule(celluleTemp)  == 0 and isVisibleCellule(celluleTemp) == False:
+                iter = decouvrirGrilleDemineur(grille, listVoisins[i])
+                for j in iter:
+                    setBase.add(j)
+    return setBase
+
+
+def simplifierGrilleDemineur(grille, coord : tuple)-> set:
+    ensemble = set()
+    compteFlag = 0
+    cellule = getCelluleGrilleDemineur(grille, coord)
+    if isVisibleCellule(cellule) == True:
+        listVoisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
+        for i in range(len(listVoisins)):
+            celluleTemp = getCelluleGrilleDemineur(grille, listVoisins[i])
+            if getAnnotationGrilleDemineur(grille, listVoisins[i]) == const.FLAG:
+                compteFlag += 1
+        if compteFlag == getContenuCellule(celluleTemp):
+            decouvrirGrilleDemineur(grille, coord)
+    return ensemble
+
+def ajouterFlagGrilleDemineur(grille : list, coord : tuple)->set:
+    listVoisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
+    compte = 0
+    ensemble = set()
+    for i in range(len(listVoisins)):
+        if getCelluleGrilleDemineur(grille, listVoisins[i])[const.VISIBLE] == False:
+            compte += 1
+    if getCelluleGrilleDemineur(grille, coord)[const.CONTENU] == compte:
+        for i in range(len(listVoisins)):
+            (getCelluleGrilleDemineur(grille, listVoisins[i]))[const.ANNOTATION] = const.FLAG
+            ensemble = (ensemble, listVoisins[i])
+    return ensemble
+
+#def simplifierToutDemineur(grille : list)->tuple:
+    #ensCoordVisibTemp = set()
+    #ensCoordFlagTemp = set()
+    #ensCoordVisib = set()
+    #ensCoordFlag = set()
+    #while ensCoordVisib != ensCoordVisibTemp or ensCoordFlag != ensCoordFlagTemp:
+        #for i in range(len(grille)):
+            #for j in range(len(grille[i])):
+                #ensCoordVisibTemp += simplifierGrilleDemineur(grille,(i,j))
+                #if ensCoordVisibTemp :
+                #    ii
+                #if :
+                 #   ensCoordFlagTemp += ajouterFlagGrilleDemineur(grille, (i,j))
+    #return (ensCoordVisib, ensCoordFlag)
