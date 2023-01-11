@@ -254,7 +254,6 @@ def decouvrirGrilleDemineur(grille : list, coord : tuple, setBase = set())->set:
                     setBase.add(j)
     return setBase
 
-
 def simplifierGrilleDemineur(grille, coord : tuple)-> set:
     ensemble = set()
     compteFlag = 0
@@ -266,7 +265,9 @@ def simplifierGrilleDemineur(grille, coord : tuple)-> set:
             if getAnnotationGrilleDemineur(grille, listVoisins[i]) == const.FLAG:
                 compteFlag += 1
         if compteFlag == getContenuCellule(celluleTemp):
-            decouvrirGrilleDemineur(grille, coord)
+            for i in range(listVoisins):
+                getCelluleGrilleDemineur(grille, listVoisins[i])[const.ANNOTATION] = const.FLAG
+            ensemble += decouvrirGrilleDemineur(grille, coord)
     return ensemble
 
 def ajouterFlagGrilleDemineur(grille : list, coord : tuple)->set:
@@ -283,16 +284,17 @@ def ajouterFlagGrilleDemineur(grille : list, coord : tuple)->set:
     return ensemble
 
 def simplifierToutDemineur(grille : list)->tuple:
-    ensCoordVisibTemp = set()
-    ensCoordFlagTemp = set()
-    ensCoordVisib = set()
-    ensCoordFlag = set()
-    while ensCoordVisib != ensCoordVisibTemp or ensCoordFlag != ensCoordFlagTemp:
-        for i in range(len(grille)):
-            for j in range(len(grille[i])):
-                ensCoordVisibTemp += simplifierGrilleDemineur(grille,(i,j))
-                if ensCoordVisibTemp :
-                    ii
-                if True:
-                    ensCoordFlagTemp += ajouterFlagGrilleDemineur(grille, (i,j))
-    return (ensCoordVisib, ensCoordFlag)
+    setVisible = set()
+    setFlag = set()
+    setVisibleTemp = set()
+    setFlagTemp = set()
+    for i in range(len(grille)):
+        for j in range(len(grille[i])):
+            setVisibleTemp += simplifierGrilleDemineur(grille, (i, j))
+            setFlagTemp += ajouterFlagGrilleDemineur(grille, (i, j))
+    if setVisibleTemp != setVisible or setFlagTemp != setFlag:
+        setVisible = setVisibleTemp
+        setFlag = setFlagTemp
+        simplifierToutDemineur(grille)
+    tupleResult =(setVisible, setFlag)
+    return tupleResult
