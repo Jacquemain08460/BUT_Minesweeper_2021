@@ -259,15 +259,21 @@ def simplifierGrilleDemineur(grille, coord : tuple)-> set:
     compteFlag = 0
     cellule = getCelluleGrilleDemineur(grille, coord)
     if isVisibleCellule(cellule) == True:
+        ensembe.add(coord)
         listVoisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
         for i in range(len(listVoisins)):
             celluleTemp = getCelluleGrilleDemineur(grille, listVoisins[i])
             if getAnnotationGrilleDemineur(grille, listVoisins[i]) == const.FLAG:
                 compteFlag += 1
         if compteFlag == getContenuCellule(celluleTemp):
-            for i in range(listVoisins):
+            for i in range(len(listVoisins)):
                 getCelluleGrilleDemineur(grille, listVoisins[i])[const.ANNOTATION] = const.FLAG
-            ensemble += decouvrirGrilleDemineur(grille, coord)
+                celluleTemp = getCelluleGrilleDemineur(grille, listVoisin[i])
+                if isVisibleCellule(celluleTemp) == False and celluleTemp[const.ANNOTATION] != const.FLAG:
+                    setVisibleCellule(celluleTemp,True)
+                    boucle = simplifierGrilleDemineur(grille, listVoisins[i])
+                    for j in range(boucle):
+                        ensemble.add(boucle[j])
     return ensemble
 
 def ajouterFlagGrilleDemineur(grille : list, coord : tuple)->set:
@@ -275,26 +281,35 @@ def ajouterFlagGrilleDemineur(grille : list, coord : tuple)->set:
     compte = 0
     ensemble = set()
     for i in range(len(listVoisins)):
-        if getCelluleGrilleDemineur(grille, listVoisins[i])[const.VISIBLE] == False:
+        celluleTemp = getCelluleGrilleDemineur(grille, listVoisins[i])
+        if isVisibleCellule(celluleTemp) == False:
             compte += 1
-    if getCelluleGrilleDemineur(grille, coord)[const.CONTENU] == compte:
+    cellule = getCelluleGrilleDemineur(grille, coord)
+    if getContenuCellule(cellule) == compte:
         for i in range(len(listVoisins)):
-            (getCelluleGrilleDemineur(grille, listVoisins[i]))[const.ANNOTATION] = const.FLAG
-            ensemble = (ensemble, listVoisins[i])
+            cellultTemp = getCelluleGrilleDemineur(grille, listVoisins[i])
+            if isVisibleCellule(celluleTemp) == False:
+                celluleTemp[const.ANNOTATION] = const.FLAG
+                ensemble.add(listVoisins[i])
     return ensemble
 
 def simplifierToutDemineur(grille : list)->tuple:
     setVisible = set()
-    setFlag = set()
     setVisibleTemp = set()
+    setFlag = set()
     setFlagTemp = set()
     for i in range(len(grille)):
         for j in range(len(grille[i])):
-            setVisibleTemp += simplifierGrilleDemineur(grille, (i, j))
-            setFlagTemp += ajouterFlagGrilleDemineur(grille, (i, j))
-    if setVisibleTemp != setVisible or setFlagTemp != setFlag:
-        setVisible = setVisibleTemp
-        setFlag = setFlagTemp
-        simplifierToutDemineur(grille)
-    tupleResult =(setVisible, setFlag)
-    return tupleResult
+            celluleTemp = getCelluleGrilleDemineur(grille, (i,j))
+            if isVisibleCellule(celluleTemp) == True:
+                setVisibleTemp = simplifierGrilleDemineur(grille, (i,j))
+                for k in range(len(setVisibleTemp)):
+                    if setVisibleTemp[k] not in setVisible:
+                        setVisible.add(setVisi)
+                setVisibleTemp = set()
+                setFlagTemp = ajouterFlagGrilleDemineur(grille, (i,j))
+                for k in range(len(setFlagTemp)):
+                    if setFlagTemp[k] not in setFlag:
+                        setFlag.add(setFlagTemp[k])
+                setFlagTemp = set()
+    return ((setVisible), (setFlag))
